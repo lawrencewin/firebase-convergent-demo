@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react"
+import { getPosts } from "./Firebase"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+
+	constructor () {
+		super()
+		this.state = {
+			posts: []
+		}
+	}
+
+	async componentDidMount () {
+		const data = await getPosts()
+		console.log(data)
+		this.setState({ posts: data })
+	}
+
+	render () {
+		return (
+			<div>
+				<h1>Posts</h1>
+				{
+					this.state.posts.map(post => {
+						return (
+							<div>
+								<h5>{post.title}</h5>
+								<div>{post.user}</div>
+								<p>{post.content}</p>
+							</div>
+						)
+					})
+				}
+			</div>
+		)
+	}
+
 }
 
-export default App;
+export default App
